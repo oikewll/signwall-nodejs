@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>签到上墙</title>
+<meta name="keywords" content="签到上墙" />
+<meta name="description" content="签到上墙" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="/public/css/style.css" />
+<link rel="stylesheet" href="/public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
+</head>
+
+<body>
+
+<section class="container" id="container"></section>
+
+<section class="footer">build with Leancloud</section>
+
+<textarea id="data-cont" style="display:none;">
+	<span class="avatar" id="avatar"><img src="$headimgurl$" id="user-avatar" alt="$nickname$" /><input type="file" name="file" id="file" class="ava-btn" /></span>
+	<p class="notice">hi~<span id="name1">$nickname$</span>，欢迎来到现场</p>
+	<div class="detail" id="sbm-detail" data-area="$country$,$province$,$city$" data-sex="$sex$" data-openid="$openid$">
+		<ul class="formlist">
+			<li class="item">
+				<i class="icon-user"></i>
+				<input type="text" id="name2" value="$nickname$" />
+			</li>
+			<li class="item">
+				<i class="icon-pushpin"></i>
+				<input type="text" id="title" placeholder="描述职位" />
+			</li>
+			<li class="item">
+				<i class="icon-quote-left"></i>
+				<input type="text" id="talks" placeholder="说点什么吧 :)" />
+			</li>
+		</ul>
+		<button type="submit" class="submit" id="btn-submsign">签到</button>
+	</div>
+</textarea>
+
+<script src="/public/js/zepto.js"></script>
+<script src="/public/js/common.js"></script>
+<script>
+$(function(){
+	var succsign = '<div class="vertical sign-success" id="tips-success"><i class="icon-check"></i><span class="txt">恭喜你，签到成功~ ：）</span><p class="desc msubtxt"><input type="text" class="mtxt" /><input type="submit" class="msub" value="发送弹幕" /></p><p class="desc"><a href="/"><i class="icon-double-angle-left"></i>返回</a></p></div>',
+		preloadtpl = '<div class="vertical" id="loading"><i class="icon-spinner icon-spin"></i></div>';
+	var uid = GetQueryString("uid"),
+		eid = GetQueryString("eid") || '5a9d0186f3ffd900440623dd';
+
+	$.ajax({
+		url: "//brige.xiaoxiaoge.com/getuser", //服务端处理
+		type: "GET",
+		data: {
+			uid: uid
+		},
+		timeout: 3000,
+		dataType : "jsonp",
+		jsonp: "callback",
+		beforeSend: function(){
+			$("#container").html(preloadtpl);
+		},
+		success: function (result) {
+			//渲染模板引擎
+			loadTemp(result);
+
+			//本地存储用户userInfo
+			localStorage.setItem('userInfo', JSON.stringify(result));
+				
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			alert("发生网络错误，请重试 :（ "+textStatus);
+		}
+	});
+
+	//模板渲染
+	function loadTemp(res){
+		$("#loading").remove()
+
+		//设置模板
+		var htmlTemp = $("#data-cont").val(),
+			temp = htmlTemp.format(res);
+
+		$("#container").append(temp);
+	};
+
+	//点击签到按钮
+	$("body").delegate("#btn-submsign", "click", function(){
+
+		var _btn = $(this);
+
+		//阻止多次点击提交
+		if (_btn.hasClass("btn-disable")){
+			alert("正在提交，别急~");
+			return;
+		};
+
+		//提交过无法再次提交
+		// if (localStorage.getItem("checked")) {
+		// 	alert("您已签到过~ 祝您好运 :)");
+		// 	return;
+		// };
+
+		//设置状态
+		_btn.addClass("btn-disable").attr("disable","disabled");
+
+		//数据处理
+		var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		
+		userInfo.title = $("#title").val() != '' ? $("#title").val() : 'BOSS';
+		userInfo.talks = $("#talks").val() != '' ? $("#talks").val() : '我来啦~希望能抽个大奖';
+		
+		$.ajax({
+			url: '/checkin',
+			type: "POST",
+			data: {
+				eid : eid,
+				userInfo: userInfo
+			},
+			timeout: 3000,
+			beforeSend: function(){
+				$("#container").append('<div class="vertical ver-loading" id="loading"><i class="icon-spinner icon-spin"></i></div>');
+			},
+			success: function (result) {
+				//种下LS，不能重复签入
+				// localStorage.setItem("checked", true);
+
+				if (result.code === -1) {
+					alert("您已签到过~ 祝您好运 :)");
+					_btn.removeClass("btn-disable");
+					$("#loading").remove()
+					return;
+				}
+
+				if (result.code === 200) {
+					$("#container").append(succsign);
+				}
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert("发生网络错误，请重试 :（ "+textStatus);
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>{{title}}</title>
+<meta name="keywords" content="{{title}}" />
+<meta name="description" content="{{title}}" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="/public/board/style/wxwall.css" />
+<link rel="stylesheet" href="/public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
+<script>
+	function GetQueryString(name){
+		var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		var r = window.location.search.substr(1).match(reg);
+		if(r!=null)return  unescape(r[2]); return null;
+	};
+
+	(function(W){
+		if(/iphone|nokia|sony|ericsson|mot|samsung|sgh|lg|philips|panasonic|alcatel|lenovo|cldc|midp|wap|mobile/i.test(navigator.userAgent.toLowerCase())){  
+			W.location.href = '//check.xiaoxiaoge.com/?eid=' + GetQueryString("eid") || '5a9d0186f3ffd900440623dd';
+		}
+	})(window);
+	</script>
+</head>
+
+<!-- <body oncontextmenu="self.event.returnValue=false"> -->
+<body class="page-index">
+	<div class="floor"></div>
+	<div class="signin-lottery s-bott" style="display:none"><a href="javascript:void(0)" class="wewall-lottery start-lottery">抽奖</a></div>
+	<div class="wewall-bott"></div>
+
+	<div class="main">
+		<div class="content">
+			<div class="join-info m">
+				<div class="b-code" id="qrcode"></div>
+				<div class="b-title">
+					<div class="notice-short">
+						<h5 class="txt">hi，欢迎来到现场~欢迎扫码签到</h5>
+						<!-- <h6 class="desc">更有抽奖活动等着你</h6> -->
+						<div class="signnum"><a href="javascrip:void(0)">已签到 : <span id="checkednum"><i class="icon-spinner icon-spin"></i></span>人</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="join-users m">
+				<ul class="user-list" id="user-list">
+				</ul>
+			</div>
+			<div class="lottery" style="display:none;">
+				<div class="fl-inner fl-bg">
+					<div class="inner-cont clearfix">
+						<div class="prize-box right">
+							<div class="outer-prize">
+								<div class="wrap-prize">
+									<div class="list-top clearfix">
+									  	<p class="pro-num right">获奖人数:<em class="winUserNum">0</em>人</p>
+										<span>获奖名单</span>
+									</div>
+									<div class="list-box">
+										<p class="list-tit">
+											<span>获奖序号</span>
+											<span>用户昵称</span>
+											<span>用户头像</span>
+										</p>
+										<div class="priname-box">
+											<ul class="prize-list winUserList"></ul>
+										</div>
+									</div><!--end .list-box-->
+									<div class="und-btn">
+										<a href="javascript:void(0);" class="resetLotteryBtn" data-disabled="no"><span style="display: inline;">重新抽奖</span><img src="http://demo.wxscreen.com/images/loading.gif" style="display: none;"></a>
+									</div>
+							  </div><!--end .wrap-prize-->
+							</div><!--end .outer-prize-->
+						</div><!--end .prize-box-->
+				
+						<div class="lottery-box">
+							<div class="box-ltop">
+								<span class="lott-wt">现场抽奖</span>
+								<p class="lott-w"><span>参加抽奖人数:<em class="join-num lotteryUserNum">0</em>人</span></p>
+							</div>
+							<div class="rock-box">
+								<span class="rock-head"><img src="/public/board/style/images/luck.png" class="lotteryImg" width="210" height="210" alt="" /></span>
+								<span class="rock-name lotteryName" data-id="988435">祝好运！</span>
+							</div>
+							<div class="btn-clear clearfix">
+								<div class="choose-num " id="lotteryNumBox">
+									<span>一次抽取</span>
+									<select name="" id="lotteryNumSel">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+										<option value="6">6</option>
+										<option value="7">7</option>
+										<option value="8">8</option>
+										<option value="9">9</option>
+										<option value="10">10</option>
+										<option value="50">50</option>
+										<option value="100">100</option>
+									</select>
+									<span>人</span>
+								</div>
+								<p class="btn-rock"><a href="javascript:void(0);" class="btn-start startLotteryBtn" data-disabled="no"><span style="display: inline;">开始抽奖</span><img style="display: none;" src="http://demo.wxscreen.com/images/loading.gif"></a></p>
+							</div>
+							<div class="btn-clear" id="slaveScreenLotteryTip" style="display: none;">
+								<p class="sup-tips">抽奖进行中...</p>
+							</div>
+						</div>
+					</div>
+				  </div>
+			</div><!--end .lottery-box-->			
+		</div>
+
+		<div class="footer">
+			<a onclick="return fullscreen();" class="wsh-beak-link">
+				<img src="/public/board/style/images/fullscreen.png" id="imgfull" alt="full" class="wsh-beak wsh-beak-hov">
+				<img src="/public/board/style/images/fullscreenfont.png" id="imgfullfont" class="wsh-beak-tips">
+			</a>
+		</div>
+		<div class="copyright">build with Leancloud/nodejs</div>
+	</div>
+
+<script src="/public/board/js/jquery-1.4.2.min.js"></script>
+<script src="/public/board/js/fullscreen.js"></script>
+<script src="/public/board/js/jquery.lottery.js"></script>
+<script src="/public/board/js/jquery.qrcode.min_1.js"></script>
+<script>
+
+//设置唯一ID
+var eid = GetQueryString("eid") ? GetQueryString("eid") : '5a9d0186f3ffd900440623dd';
+var countNum = 0; //初始签入人数
+var firstID = ''; //最新签入人的识别id，取openid
+var cacheInterval;
+
+$(function(){
+	$('#qrcode').qrcode({
+		width: 160, 
+		height: 160,
+		text: window.location.href
+	});
+
+	//新用户动画
+	function setLayoutTemp(data){
+		var $item = $("#user-list .item"),
+			$itemFirst = $("#user-list .item:first-child");
+		var itemLeft = $itemFirst.offset().left,
+			itemTop = $itemFirst.offset().top;
+
+		var contTemp = '<img src="'+data['headimgurl']+'" alt="'+data['nickname']+'" />'
+								+'<span class="nickname">'+data['nickname']+'</span>'
+								+'<span class="time">'+data['time']+'</span>'
+								+'<div class="talks">'+data['talks']+'</div>';
+
+		var layoutTemp = '<div class="user-layout" id="user-layout">'+contTemp+'</div>';
+		$("body").append(layoutTemp);
+
+		setTimeout(function(){
+			$("#user-layout").css({
+				"left" : parseInt(itemLeft - 450),
+				"top" : itemTop
+			});
+			$itemFirst.css({
+				"marginLeft" : 200
+			});
+		}, 1600);//600ms后移动 ，popShow的动画时间
+
+		//重设用户list
+		setTimeout(function(){
+			$("#user-layout").remove();
+			$itemFirst.css({
+				"marginLeft" : 30,
+				"webkitTransition" : "none"
+			});
+			var newTemp = '<li class="item">'+contTemp+'</li>';
+			$("#user-list").prepend(newTemp);
+		}, 2800); //这个是移动新用户的动画时间
+	};
+
+	//随机设置说话
+	function randomTalks(){
+		var $item = $("#user-list .item");
+			$item.removeClass("item-random");
+
+		//这里用已签入人数作为随机数显示说说
+		var ran = Math.random() * countNum >> 0;
+
+		$item.eq(ran).addClass("item-random");
+	};
+
+	//拉取新用户
+	function getNewUser(){
+		$.ajax({
+			url: "/getcheck",
+			type: "GET",
+			data: {
+				eid: eid
+			},
+			timeout: 3200,
+			success: function (result) {
+				if (result.code !== 200) {
+					$("#user-list").html('<li class="item item-holder"><em class="unit">:( 网络错误，请刷新~</em></li>');
+					clearInterval(cacheInterval);
+					return;
+				}
+
+				$("#user-list .item-holder").remove();//移除掉提示
+
+				//这里防止短时间内频繁签入的时候，漏掉第一个以外的新用户，要重新init现有web端list
+				if (result.count >= Number(countNum + 3)) {
+					relistDom(result.data);
+				};
+
+				var dataFirst = result.data[0],
+					deteckName = $("#user-list .item:first-child").find(".nickname").text();
+
+				//第一个不同，有新签入
+				if (dataFirst['nickname'] != deteckName){
+					countNum++;
+					$("#checkednum").html(countNum);
+					setLayoutTemp(dataFirst);
+				}
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				window.location.reload;
+			}
+		});
+	};
+
+	//relist dom
+	function relistDom(data){
+		var _tpl = '';
+			_countNum = data.length;
+		for (var i = 0; i < data.length; i++) {
+			_tpl += '<li class="item"><img src="'+data[i]['headimgurl']+'" alt="'+data[i]['nickname']+'" />'
+					+'<span class="nickname">'+data[i]['nickname']+'</span>'
+					+'<span class="time">'+data[i]['time']+'</span>'
+					+'<div class="talks">'+data[i]['talks']+'</div></li>';
+		};
+		$("#user-list").append(_tpl);
+		$("#checkednum").html(_countNum);
+	};
+
+	//init
+	function initTemp(){
+		$.ajax({
+			url: "/getcheck",
+			type: "GET",
+			data: {
+				"eid" : eid
+			},
+			timeout: 5000,
+			beforeSend: function(){
+				$("#user-list").html('<li class="item item-holder"><em class="unit"><i class="icon-spinner icon-spin"></i></em></li>');
+			},
+			success: function (result) {
+				if (result.code === 101) {
+					$("#user-list").html('<li class="item item-holder"><em class="unit">活动id不存在，请联系管理员</em></li>');
+					return;
+				}
+
+				if (result.code !== 200) {
+					$("#user-list").html('<li class="item item-holder"><em class="unit">:( 网络错误，请刷新后重试</em></li>');
+					return;
+				}
+
+				//如果签到为0，还没开始
+				if (result.count === 0) {
+					$("#user-list").html('<li class="item item-holder"><em class="unit">:( 还没有人签到呢</em></li>');
+					$("#checkednum").html(0);
+					return;
+				}
+
+				$("#user-list .item-holder").remove();//移除掉提示
+				var tpl = '', 
+					userData = result.data;
+				for (var i = 0; i < userData.length; i++) {
+					tpl += '<li class="item"><img src="'+userData[i]['headimgurl']+'" alt="'+userData[i]['nickname']+'" />'
+							+'<span class="nickname">'+userData[i]['nickname']+'</span>'
+							+'<span class="time">'+userData[i]['time']+'</span>'
+							+'<div class="talks">'+userData[i]['talks']+'</div></li>';
+				};
+				$("#user-list").append(tpl);
+				$("#checkednum").html(result.count);
+
+				//设置全局变量，更新已签到人数和第一位的识别ID，用于在后台查询是否有新签入
+				countNum = result.count;
+				firstID = userData[0].openid;
+
+				//设置定时器拉取数据
+				cacheInterval = setInterval(getNewUser, 3300);
+				//3s设置一次随机显示说说
+				setInterval(randomTalks, 3000);
+			},
+			error: function (jqXHR, textStatus, errorThrown) {
+				alert("发生网络错误，请重试 :（ "+textStatus);
+			}
+		});
+	};
+	initTemp();
+});
+</script>
+</body>
+</html>

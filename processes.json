@@ -1,0 +1,11 @@
+{
+	"apps": [
+	{
+		"name": "signwall",
+		"script": "bin/www",
+		"max_memory_restart": "1024M",
+		"watch": ["views", "public", "app.js", "server.js"],
+		"log_date_format": "YYYY-MM-DD HH:mm Z"
+	}
+	]
+}

@@ -1,0 +1,231 @@
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-text-size-adjust:100%;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	font-family: PingFangSC-Regular, sans-serif;
+}
+ul,ol{
+	list-style: none;
+}
+a{
+	text-decoration: none;
+	color: inherit;
+}
+html,body{
+	width: 100%;
+	height: 100%;
+	line-height: 1;
+	background: #484c58;
+}
+.container{
+	padding: 20px;
+}
+.container .avatar{
+	display: block;
+	width: 130px;
+	height: 130px;
+	overflow: hidden;
+	margin: 0 auto 20px auto;
+	border-radius: 50%;
+	box-shadow: 0 0 15px rgba(0,0,0,.6);
+	position: relative;
+}
+.container .avatar img{
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;/*安卓机挡不住*/
+}
+.container .avatar .ava-btn{
+	font-size: 300px;
+	opacity: 0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+.container .avatar .txt{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	line-height: 130px;
+	text-align: center;
+	color: #fff;
+	font-size: 12px;
+	background: rgba(0,0,0,.65);
+}
+.container .notice{
+	font-size: 14px;
+	color: #fff;
+	text-align: center;
+	margin-bottom: 30px;
+}
+.container .formlist{
+	font-size: 0;
+}
+.formlist .item{
+	font-size: 14px;
+	margin-bottom: 10px;
+	width: 100%;
+	position: relative;
+}
+.formlist .item [class^="icon-"]{
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	color: #777;
+	font-size: 18px;
+}
+.detail input{
+	display: block;
+	width: 100%;
+	height: 35px;
+	text-indent: 35px;
+	font-size: 14px;
+	color: #666;
+	border: 0 none;
+	background: #fff;
+	border-radius: 0;
+}
+.detail .submit{
+	color: #000;
+	height: 35px;
+	line-height: 35px;
+	border: 0 none;
+	background: #dabb84;
+	font-size: 14px;
+	text-align: center;
+	width: 100%;
+}
+.detail .btn-disable{
+	color: #777;
+	background: #CCC4B7;
+}
+.vertical{
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	font-size: 50px;
+	color: #333;
+	text-align: center;
+	position: fixed;
+	z-index: 9999;
+	left: 0;
+	top: 0;
+	
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-box-pack: center;
+	-webkit-box-align: center;
+
+	display: -webkit-flex;
+	-webkit-align-items: center;
+	-webkit-justify-content: center;
+	-webkit-flex-direction: column;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+}
+.ver-loading{
+	width: 220px;
+	height: 180px;
+	left: 50%;
+	top: 50%;
+	color: #fff;
+	font-size: 40px;
+	border-radius: 15px;
+	-webkit-transform: translate3D(-50%, -50%, 0);
+	background: rgba(0,0,0,.65);
+}
+.sign-success{
+	font-size: 60px;
+	color: #199E26;
+}
+.vertical [class^="icon-"]{
+	margin-bottom: 15px;
+}
+.ver-loading [class^="icon-"]{
+	margin-bottom: 0;
+}
+.vertical .txt{
+	font-size: 16px;
+}
+.sign-success .txt{
+	font-size: 24px;
+	display: block;
+}
+.sign-success .desc{
+	font-size: 12px;
+	color: #999;
+	padding-top: 15px;
+}
+.sign-success .msubtxt{
+	width: 250px;
+	/*height: 35px;*/
+	font-size: 14px;
+}
+.msubtxt .mtxt{
+	height: 35px;
+	box-sizing: border-box;
+	padding-left: 15px;
+	width: 170px;
+	float: left;
+}
+.msubtxt .msub{
+	float: right;
+	width: 80px;
+	/*height: 35px;
+	line-height: 35px;*/
+	text-align: center;
+}
+.sign-success .desc a{
+	color: #666;
+}
+
+.appindex{
+	background: #484c58 url(../img/bg-enter.jpg) no-repeat center center;
+	background-size: 100% 100%;
+}
+.list-item{
+	font-size: 0;
+	width: 80%;
+}
+.list-item .item{
+	display: inline-block;
+	width: 50%;
+	color: #fff;
+}
+.list-item .item .icon{
+	display: inline-block;
+	background: #dabb84;
+	border-radius: 10px;
+	width: 76px;
+	height: 76px;
+	font-size: 50px;
+	text-align: center;
+	line-height: 76px;
+	margin-bottom: 10px;
+	text-indent: 5px;
+}
+.list-item .item .txt{
+	font-size: 14px;
+	display: block;
+}
+
+.footer{
+	height: 18px;
+	font-size: 10px;
+	width: 100%;
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	color: #999;
+	text-align: center;
+	z-index: 10001;
+}

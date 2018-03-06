@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>{{title}}</title>
+<meta name="keywords" content="{{title}}" />
+<meta name="description" content="{{title}}" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="public/css/style.css" />
+<link rel="stylesheet" href="public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="public/css/font-awesome-ie7.min.css" /><![endif]-->
+<style>
+	.setevent{
+		color: #fff;
+	}
+	.setevent li{
+		padding: 10px;
+	}
+	.setevent input{
+		background: #fff;
+		color: #000;
+		border: 1px solid #ddd;
+	}
+	.setevent button{
+		background: #fff;
+		color: #000;
+		padding: 5px 20px;
+	}
+</style>
+</head>
+
+<body>
+<form action="/setevent" method="POST">
+<ul class="setevent">
+	<li><label>活动名称：</label><input type="text" name="ename" /></li>
+	<li><label>活动地点：</label><input type="text" name="eaddress" /></li>
+	<li><label>活动时间：</label><input type="datetime-local" name="etime" /></li>
+	<li><button type="submit">提交</button></li>
+</ul>
+</form>
+
+<section class="footer">build with Leancloud</section>
+</body>
+</html>

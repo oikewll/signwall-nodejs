@@ -1,0 +1,29 @@
+{
+  "name": "9up",
+  "version": "0.0.1",
+  "description": "telegram bot",
+  "main": "bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "microblog"
+  ],
+  "author": "hoanliu",
+  "license": "ISC",
+  "engines": {
+    "node": ">=6.10.1"
+  },
+  "dependencies": {
+    "async": "^2.4.1",
+    "cors": "^2.8.3",
+    "express": "^4.15.3",
+    "leanengine": "^2.0.3",
+    "moment": "^2.18.1",
+    "node-telegram-bot-api": "^0.27.1",
+    "qiniu": "^6.1.13",
+    "request": "^2.81.0",
+    "swig": "^1.4.2"
+  }
+}

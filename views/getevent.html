@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>{{title}}</title>
+<meta name="keywords" content="{{title}}" />
+<meta name="description" content="{{title}}" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="public/css/style.css" />
+<link rel="stylesheet" href="public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="public/css/font-awesome-ie7.min.css" /><![endif]-->
+<style>
+	.eventlist{
+		width: 100%;
+		color: #fff;
+		text-align: center;
+	}
+	.eventlist th{
+		padding: 10px 0;
+	}
+	.eventlist td{
+		padding: 10px 0;
+	}
+</style>
+</head>
+
+<body>
+<table class="eventlist" id="eventlist">
+	<tr>
+		<th>EID</th>
+		<th>活动名称</th>
+		<th>活动地点</th>
+		<th>活动时间</th>
+		<th>创建时间</th>
+		<th>更新时间</th>
+	</tr>
+</table>
+
+<section class="footer">build with Leancloud</section>
+
+<script src="/public/js/zepto.js"></script>
+<script src="/public/js/common.js"></script>
+<script>
+	$.ajax({
+		url: '/getevent',
+		type: "POST",
+		timeout: 3000,
+		success: function (result) {
+			var tpl = '';
+			for (var i = result.length - 1; i >= 0; i--) {
+				tpl += '<tr><td>'+result[i].objectId+'</td><td>'+result[i].ename+'</td><td>'+result[i].eaddress+'</td><td>'+result[i].etime+'</td><td>'+result[i].createdAt+'</td><td>'+result[i].updatedAt+'</td></tr>'
+			}
+			$("#eventlist").append(tpl);
+		},
+		error: function (jqXHR, textStatus, errorThrown) {
+			alert("发生网络错误，请重试 :（ "+textStatus);
+		}
+	});
+</script>
+</body>
+</html>

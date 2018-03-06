@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<title>团建神器</title>
+<meta name="keywords" content="团建神器" />
+<meta name="description" content="团建神器" />
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta name="format-detection" content="telephone=no" />
+<link rel="stylesheet" href="public/css/style.css" />
+<link rel="stylesheet" href="public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="public/css/font-awesome-ie7.min.css" /><![endif]-->
+</head>
+
+<body>
+
+<section class="vertical appindex">
+	<ul class="list-item">
+		<li class="item">
+			<a href="javascript:;" id="symbalurl">
+				<span class="icon"><i class="icon-edit"></i></span>
+				<span class="txt">签到上墙</span>
+			</a>
+		</li>
+		<li class="item">
+			<a href="https://oikewll.github.io/30s/">
+				<span class="icon"><i class="icon-fighter-jet"></i></span>
+				<span class="txt">玩游戏</span>
+			</a>
+		</li>
+	</ul>
+</section>
+
+<section class="footer">build with Leancloud</section>
+<script src="/public/js/zepto.js"></script>
+<script src="/public/js/common.js"></script>
+<script>
+$(function(){
+	var eid = GetQueryString("eid") || '5a9d0186f3ffd900440623dd';
+
+	$("#symbalurl").tap(function(){
+		window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf17f8086b1190319&redirect_uri=http%3A%2F%2Fbrige.xiaoxiaoge.com/oauth&response_type=code&scope=snsapi_userinfo&state='+eid+'#wechat_redirect';
+	});
+});
+</script>
+</body>
+</html>
