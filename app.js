@@ -62,9 +62,30 @@ app.get('/', function(req, res, next){
 });
 
 app.get('/board', function(req, res, next){
-	res.render('board', {
-		title: '签到大屏幕'
-	});
+	let eid = getparam(req).eid;
+
+	if (!eid) {
+		res.render('board', {
+			title: '签到大屏幕 ：）'
+		});
+		return;
+	}
+
+	let query = new AV.Query('events');
+		query.get(eid).then(function(result){
+
+			// res.send(result);return;
+
+			res.render('board', {
+				title: '签到大屏幕:-)',
+				result: result.toJSON()
+			});
+
+		}, function (error) {
+			res.render('board', {
+				title: '签到大屏幕-{{err}}'
+			});
+		});
 });
 
 app.get('/signin', function(req, res, next){
@@ -75,15 +96,36 @@ app.get('/signin', function(req, res, next){
 
 app.get('/setevent', function(req, res, next){
 	res.render('setevent', {
-		title: '设置会议'
+		title: '设置活动'
 	});
 });
 app.get('/getevent', function(req, res, next){
 	res.render('getevent', {
-		title: '所有会议'
+		title: '所有活动'
 	});
 });
+app.get('/getevent/edit/:id', function(req, res, next){
+	let id = req.params.id;
 
+	let query = new AV.Query('events');
+		query.get(id).then(function(result){
+
+			res.render('setevent', {
+				title: '编辑活动',
+				id: id,
+				result: result.toJSON()
+			});
+			
+		}, function (err) {
+			res.json(err);
+		});
+});
+
+/**
+* 轮询方法：
+* @param: eid 场次活动的id
+* @return: 用户列表，用户数
+*/
 app.get('/getcheck', function(req, res, next){
 	let eid = getparam(req).eid;
 
@@ -130,16 +172,23 @@ app.post('/:type', function(req, res){
 			let eventObj = AV.Object.extend('events'),
 				eventList = new eventObj();
 
+			param.openLottery = param.openLottery === '1' ? true : false;
+			param.lotteryType = param.lotteryType === '1' ? 'single' : 'group';
+			param.setgift = Number(param.setgift);
+
 			for(let key in param){
 				eventList.set(key, param[key]);
 			}
 
 			eventList.save().then(function (data) {
 
-				res.send(data.id);
+				res.redirect('/getevent/?ref.id='+data.id);
 
 			}, function (err) {
-				res.json({code: -1, msg: err});
+				res.json({
+					code: err.code,
+					msg: '发生错误'
+				});
 			});
 
 		break;
@@ -148,6 +197,69 @@ app.post('/:type', function(req, res){
 
 			new AV.Query('events').find().then(function(data){
 				res.json(data);
+			});
+
+		break;
+
+		case'delevent':
+
+			let id = param.id;
+
+			if (!id) {
+				res.json({
+					code: -1,
+					msg: '缺少id参数'
+				});
+				return;
+			}
+
+			let deleteItem = AV.Object.createWithoutData('events', id);
+				deleteItem.destroy().then(function (success) {
+					// 删除成功
+					res.json({
+						code: 200,
+						msg: 'delete done!'
+					});
+
+				}, function (error) {
+					// 删除失败
+					res.json({
+						code: -1,
+						msg: 'delete fail!'
+					});
+				});
+
+		break;
+
+		case'upevent':
+
+			if (!param.id) {
+				res.json({
+					code: -1,
+					msg: '缺少id参数'
+				});
+				return;
+			}
+
+			param.openLottery = param.openLottery === '1' ? true : false;
+			param.lotteryType = param.lotteryType === '1' ? 'single' : 'group';
+			param.setgift = Number(param.setgift);
+
+			let upItem = AV.Object.createWithoutData('events', param.id);
+
+			for(key in param){
+				upItem.set(key, param[key]);
+			}
+
+			upItem.save().then(function(data){
+
+				res.redirect('/getevent/?ref.id='+param.id);
+				
+			}, function(err){
+				res.json({
+					code: -1,
+					msg: 'update fail'
+				})
 			});
 
 		break;

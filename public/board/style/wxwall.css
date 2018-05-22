@@ -82,12 +82,13 @@ img {
 	z-index:100;
 }
 .copyright{
-	position: fixed;
 	width: 100%;
 	bottom: 10px;
 	text-align: center;
-	color: #fff;
 	font-size: 10px;
+	position: static;
+	padding: 10px 0;
+	color: #999;
 }
 .list #list {
 	width:100%;
@@ -375,13 +376,65 @@ img {
 .btn-rock a {
 	color:#ed2947;
 }
+
+@-webkit-keyframes dropdown{
+	0%{-webkit-transform:translateY(-100%);}
+	33%{-webkit-transform:translateY(13px);}
+	66%{-webkit-transform:translateY(-5px);}
+	100%{-webkit-transform:translateY(0);}
+}
+@-moz-keyframes dropdown{
+	0%{-moz-transform:translateY(-100%);}
+	33%{-moz-transform:translateY(13px);}
+	66%{-moz-transform:translateY(-5px);}
+	100%{-moz-transform:translateY(0);}
+}
+@keyframes dropdown{
+	0%{transform:translateY(-100%);}
+	33%{transform:translateY(13px);}
+	66%{transform:translateY(-5px);}
+	100%{transform:translateY(0);}
+}
 .lottery {
 	width:100%;
 	height:790px;
-	background-color:rgba(255,255,255,0.7);
+	background-color:rgba(255,255,255,0.9);
+
+	-webkit-animation: dropdown .9s ease both;
+	-moz-animation: dropdown .9s ease both;
+	animation: dropdown .9s ease both;
+}
+.lottery .btn-close{
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	color: #333;
+	font-size: 0;
+	width: 30px;
+	height: 30px;
+	line-height: 99999px;
+	overflow: hidden;
+}
+.lottery .btn-close:after,
+.lottery .btn-close:before{
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	top: 50%;
+	left: 0;
+	background: #666;
+}
+.lottery .btn-close:before{
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.lottery .btn-close:after{
+	-webkit-transform: rotate(-45deg);
+	transform: rotate(-45deg);
 }
 .btn-start {
-	text-decoration:none;
+	text-decoration: none;
 }
 .und-btn a {
 	display:inline-block;
@@ -630,10 +683,10 @@ img {
 	display:block;
 	width:230px;
 	height:230px;
-	border:1px solid #ffffff;
+	/*border:1px solid #ffffff;*/
 	margin:0 auto;
 	text-align:center;
-	background-color:rgba(255,255,255,0.37);
+	/*background-color:rgba(255,255,255,0.37);*/
 	position:relative;
 	cursor:pointer;
 }
@@ -641,13 +694,49 @@ img {
 	border-radius:50%;
 	margin-top:10px;
 }
+.rock-head .crown{
+	display: inline-block;
+	width: 217px;
+	height: 140px;
+	background: url(images/crown.png) no-repeat;
+	background-size: 100% 100%;
+	position: absolute;
+	left: 50%;
+	top: -100px;
+	margin-left: -108px;
+
+ 	-webkit-animation: crownDropdown 1.2s .3s ease both;
+ 	transform: skewX(10deg) rotate(-29deg) translate3d(-34px, -15px, 0) scale(.8);
+ 	transform-origin: 50% 100%;
+}
+@-webkit-keyframes crownDropdown{
+	0%{
+		transform: translateY(-200px);
+		opacity: 0;
+	}
+	30%{
+		transform: translateY(0);
+		opacity: 1;
+		height: 140px;
+	}
+	40%{
+		transform: translateY(30px) skewX(0deg);
+		-webkit-transform-origin: 50% 100%;
+		height: 110px;
+	}
+	50%{
+		transform: translateY(-60px) skewX(20deg);
+	 	-webkit-transform-origin: 50% 100%;
+		height: 180px;
+	}
+}
+
 .rock-name {
 	display:block;
-	height:56px;
-	line-height:56px;
 	text-align:center;
 	font-size:28px;
-	margin-top:20px;
+	margin-top:10px;
+	margin-bottom: 50px;
 }
 .btn-rock {
 	text-align:center;
@@ -661,6 +750,7 @@ img {
 	border-radius:6px 6px 6px 6px;
 	line-height:56px;
 	text-align:center;
+	text-shadow: 1px 1px 1px #555;
 }
 .und-btn {
 	text-align:center;
@@ -884,6 +974,10 @@ img {
 	font-size: 36px;
 	color: #fff;
 }
+.user-list .item-transparent{
+	opacity: 0;
+	filter: alpha(opacity=0);
+}
 .user-layout img,
 .user-list .item img {
 	border-radius:50%;
@@ -900,6 +994,9 @@ img {
 .user-layout .nickname,
 .user-list .item .nickname{
 	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .user-layout .time,
 .user-list .item .time{
@@ -1071,9 +1168,106 @@ img {
 	z-index:102;
 }
 
+.lottery-single .lotlist-user{
+	padding-top: 0;
+	visibility: hidden;
+}
+
+html,
+:-webkit-full-screen{
+	background: #484c58;
+}
+
 .page-index{
 	background: #484c58 url(images/bg-index.jpg) repeat-x center center;
 	background-size: auto 100%;
+}
+
+.btn-lottory{
+	display: inline-block;
+	line-height: 48px;
+	padding-left: 20px;
+	font-size: 14px;
+	color: #fff!important;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.btn-lottory:hover{
+	text-decoration: none;
+	color: red!important;
+}
+
+.lotlist-user{
+	padding-top: 50px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+.lotlist-user .item{
+	display: inline-block;
+	max-width: 100px;
+	margin: 0 15px;
+}
+.lotlist-user .avatar{
+	display: block;
+	margin-bottom: 10px;
+}
+.lotlist-user .avatar img{
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+}
+.lotlist-user .item .nickname{
+	display: block;
+	height: 30px;
+	line-height: 30px;
+	font-size: 14px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@-webkit-keyframes zoomBig{
+	0%{
+		-webkit-transform: scale(0);
+		opacity: 0;
+	}
+	100%{
+		-webkit-transform: scale(1);
+		opacity: .6;
+	}
+}
+.sineCanvas{
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+ 	-webkit-animation: zoomBig .5s ease both;
+	animation: zoomBig .5s ease both;
+}
+
+@-webkit-keyframes popupOnce{
+	0%{
+		-webkit-transform: scale(1);
+	}
+	33%{
+		-webkit-transform: scale(1.2);
+	}
+	66%{
+		-webkit-transform: scale(.9);
+	}
+	100%{
+		-webkit-transform: scale(1);
+	}
+}
+.item-popup{
+ 	-webkit-animation: popupOnce .8s ease both;
+	animation: popupOnce .8s ease both;
+}
+.item-popup-lol{
+ 	-webkit-animation: popupOnce .8s .3s ease both;
+	animation: popupOnce .8s .3s ease both;
 }
 
 @media only screen and (max-width:600px), only screen and (max-device-width:600px){
@@ -1134,11 +1328,7 @@ img {
 .user-layout{
 	display: none!important;
 }
-.copyright{
-	position: static;
-	padding: 10px 0;
-	color: #999;
-}
+
 .user-list{
 	-webkit-columns: none;
 }

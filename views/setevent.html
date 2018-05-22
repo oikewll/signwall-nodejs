@@ -7,20 +7,41 @@
 <meta name="description" content="{{title}}" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
 <meta name="format-detection" content="telephone=no" />
-<link rel="stylesheet" href="public/css/style.css" />
-<link rel="stylesheet" href="public/css/font-awesome.min.css" />
-<!--[if IE 7 ]><link rel="stylesheet" href="public/css/font-awesome-ie7.min.css" /><![endif]-->
+<link rel="stylesheet" href="/public/css/style.css" />
+<link rel="stylesheet" href="/public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
 <style>
 	.setevent{
 		color: #fff;
+		width: 450px;
+		margin: 0 auto;
 	}
 	.setevent li{
 		padding: 10px;
 	}
 	.setevent input{
+		line-height: 34px;
+		height: 34px;
 		background: #fff;
 		color: #000;
 		border: 1px solid #ddd;
+	}
+	.setevent input[disabled]{
+		background: #999;
+		border-color: #666;
+		cursor: not-allowed;
+	}
+	.setevent .group{
+		margin-right: 20px;
+	}
+	input[type='radio']{
+		height: auto;
+		line-height: normal;
+	}
+	input[type='text'],
+	input[type='number'],
+	input[type='datetime-local']{
+		width: 250px;
 	}
 	.setevent button{
 		background: #fff;
@@ -31,15 +52,78 @@
 </head>
 
 <body>
-<form action="/setevent" method="POST">
+{%if result %}
+<form action="/upevent" method="POST" id="postEvent">
+<input type="hidden" name="id" value="{{id}}">
+{% else %}
+<form action="/setevent" method="POST" id="postEvent">
+{% endif %}
 <ul class="setevent">
-	<li><label>活动名称：</label><input type="text" name="ename" /></li>
-	<li><label>活动地点：</label><input type="text" name="eaddress" /></li>
-	<li><label>活动时间：</label><input type="datetime-local" name="etime" /></li>
+	<li><label>活动名称：</label><input placeholder="设置活动名称" value="{{result.ename}}" type="text" name="ename"/></li>
+	<li><label>活动地点：</label><input placeholder="设置活动地点" value="{{result.eaddress}}" type="text" name="eaddress" /></li>
+	<li><label>活动时间：</label><input type="datetime-local" name="etime" value="{{result.etime}}" /></li>
+	<li><label>开启抽奖：</label>
+		{% if result.openLottery %}
+		<label class="group"><input checked="" type="radio" name="openLottery" value="1" /> 是</label>
+		<label class="group"><input type="radio" name="openLottery" value="0" /> 否</label>
+		{% else %}
+		<label class="group"><input type="radio" name="openLottery" value="1" /> 是</label>
+		<label class="group"><input checked="" type="radio" name="openLottery" value="0" /> 否</label>
+		{% endif %}
+	</li>
+	<li><label>抽奖模式：</label>
+		{% if result.openLottery && result.lotteryType == 'single' %}
+		<label class="group"><input checked="" type="radio" name="lotteryType" value="1" /> 单个中奖</label>
+		<label class="group"><input type="radio" name="lotteryType" value="0" /> 多人中奖</label>
+		{% elseif result.openLottery && result.lotteryType == 'group' %}
+		<label class="group"><input type="radio" name="lotteryType" value="1" /> 单个中奖</label>
+		<label class="group"><input checked="" type="radio" name="lotteryType" value="0" /> 多人中奖</label>
+		{% else %}
+		<label class="group"><input checked="" type="radio" name="lotteryType" disabled="" value="1" /> 单个中奖</label>
+		<label class="group"><input type="radio" name="lotteryType" disabled="" value="0" /> 多人中奖</label>
+		{% endif %}
+	</li>
+	{% if result.openLottery && result.lotteryType != 'null' && result.lotteryType != 'single' %}
+	<li><label>中奖人数：</label><input placeholder="设置可以批量抽奖人数" type="number" value="{{result.setgift}}" name="setgift" /></li>
+	{% else %}
+	<li><label>中奖人数：</label><input placeholder="设置可以批量抽奖人数" type="number" disabled="" name="setgift" /></li>
+	{% endif %}
 	<li><button type="submit">提交</button></li>
 </ul>
 </form>
 
 <section class="footer">build with Leancloud</section>
+
+<script src="/public/board/js/jquery.min.js"></script>
+<script>
+$(function(){
+	//提交
+	$("#postEvent").on('submit', function(e){
+		console.log($('input[name="openLottery"]:checked').val());
+		
+		// return false;
+	});
+
+	//开启抽奖
+	$('input[name="openLottery"]').on('click', function(e){
+		if ($('input[name="openLottery"]:checked').val() === '1') {
+			//开启抽奖模式
+			$('input[name="lotteryType"]').attr('disabled', false);
+		}else{
+			$('input[name="lotteryType"]').attr('disabled', true);
+		}
+	});
+
+	//切换抽奖模式
+	$('input[name="lotteryType"]').on('click', function(e){
+		if ($('input[name="lotteryType"]:checked').val() === '0') {
+			//开启抽奖模式
+			$('input[name="setgift"]').attr('disabled', false);
+		}else{
+			$('input[name="setgift"]').attr('disabled', true);
+		}
+	});
+});
+</script>
 </body>
 </html>

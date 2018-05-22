@@ -7,9 +7,9 @@
 <meta name="description" content="{{title}}" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
 <meta name="format-detection" content="telephone=no" />
-<link rel="stylesheet" href="public/css/style.css" />
-<link rel="stylesheet" href="public/css/font-awesome.min.css" />
-<!--[if IE 7 ]><link rel="stylesheet" href="public/css/font-awesome-ie7.min.css" /><![endif]-->
+<link rel="stylesheet" href="/public/css/style.css" />
+<link rel="stylesheet" href="/public/css/font-awesome.min.css" />
+<!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
 <style>
 	.eventlist{
 		width: 100%;
@@ -22,6 +22,19 @@
 	.eventlist td{
 		padding: 10px 0;
 	}
+	.btn-normal{
+		display: inline-block;
+		padding: 0 10px;
+		border-radius: 4px;
+		background: #fff;
+		color: #000;
+		height: 26px;
+		line-height: 26px;
+	}
+	.btn-delete{
+		background: red;
+		color: #fff;
+	}
 </style>
 </head>
 
@@ -32,16 +45,21 @@
 		<th>活动名称</th>
 		<th>活动地点</th>
 		<th>活动时间</th>
+		<th>开启抽奖</th>
 		<th>创建时间</th>
 		<th>更新时间</th>
+		<th>操作</th>
 	</tr>
 </table>
+
+<a href="/setevent" class="btn-normal">+新增一个活动</a>
 
 <section class="footer">build with Leancloud</section>
 
 <script src="/public/js/zepto.js"></script>
 <script src="/public/js/common.js"></script>
 <script>
+$(function(){
 	$.ajax({
 		url: '/getevent',
 		type: "POST",
@@ -49,7 +67,17 @@
 		success: function (result) {
 			var tpl = '';
 			for (var i = result.length - 1; i >= 0; i--) {
-				tpl += '<tr><td>'+result[i].objectId+'</td><td>'+result[i].ename+'</td><td>'+result[i].eaddress+'</td><td>'+result[i].etime+'</td><td>'+result[i].createdAt+'</td><td>'+result[i].updatedAt+'</td></tr>'
+				let q = result[i].openLottery ? '开启' : '关闭',
+					p = (result[i].openLottery && result[i].lotteryType == 'group') ? '<br />（抽'+result[i].setgift + '人）' : '';
+				tpl += '<tr><td><a href="/board?eid='+result[i].objectId+'" target="_blank">'+result[i].objectId+'</td>'
+							+'<td>'+result[i].ename+'</td>'
+							+'<td>'+result[i].eaddress+'</td>'
+							+'<td>'+result[i].etime+'</td>'
+							+'<td>'+ q + p + '</td>'
+							+'<td>'+result[i].createdAt+'</td>'
+							+'<td>'+result[i].updatedAt+'</td>'
+							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a></td>'
+						+'</tr>'
 			}
 			$("#eventlist").append(tpl);
 		},
@@ -57,6 +85,30 @@
 			alert("发生网络错误，请重试 :（ "+textStatus);
 		}
 	});
+
+	//代理点击事件
+	$("body").delegate(".ac-delete", "click", function(){
+		if (window.confirm('确定概要删除这个活动吗？')) {
+			var id = $(this).attr('data-id');
+			$.ajax({
+				url: '/delevent',
+				type: "POST",
+				data: {
+					id: id
+				},
+				timeout: 3000,
+				success: function (res){
+					if (!res.code || res.code !== 200) {alert('发生错误，请重试');return}
+
+					window.location.reload();
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert("发生网络错误，请重试 :（ "+textStatus);
+				}
+			});
+		}
+	});
+});	
 </script>
 </body>
 </html>
