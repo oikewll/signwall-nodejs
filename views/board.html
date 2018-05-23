@@ -7,7 +7,7 @@
 <meta name="description" content="{{title}}" />
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
 <meta name="format-detection" content="telephone=no" />
-<link rel="stylesheet" href="/public/board/style/wxwall.css" />
+<link rel="stylesheet" href="/public/board/style/wxwall.css?v0523" />
 <link rel="stylesheet" href="/public/css/font-awesome.min.css" />
 <!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
 <script>
@@ -87,6 +87,7 @@ var eid = GetQueryString("eid") ? GetQueryString("eid") : '5a9d0186f3ffd90044062
 var countNum = 0; //初始签入人数
 var firstID = ''; //最新签入人的识别id，取openid
 var cacheInterval;
+var checkInUser = [];  // ws签入的用户缓存
 
 $(function(){
 	$('#qrcode').qrcode({
@@ -185,6 +186,24 @@ $(function(){
 		});
 	};
 
+	//拉取新用户
+	function getNewUserByarr(){
+		if (checkInUser.length === 0){
+			console.log('没有新用户签入了');
+			return;
+		}
+
+		//更新签入人数
+		countNum++;
+		$("#checkednum").html(countNum);
+
+		//渲染模板
+		setLayoutTemp(checkInUser[0].data);
+
+		//删掉第一个已经渲染了的元素
+		checkInUser = checkInUser.splice(1);
+	};
+
 	//relist dom
 	function relistDom(data){
 		var _tpl = '';
@@ -231,7 +250,7 @@ $(function(){
 					countNum = result.count;
 
 					//设置定时器拉取数据
-					cacheInterval = setInterval(getNewUser, 3300);
+					cacheInterval = setInterval(getNewUserByarr, 3300);
 					//3s设置一次随机显示说说
 					setInterval(randomTalks, 3000);
 					return;
@@ -254,7 +273,7 @@ $(function(){
 				firstID = userData[0].openid;
 
 				//设置定时器拉取数据
-				cacheInterval = setInterval(getNewUser, 3300);
+				cacheInterval = setInterval(getNewUserByarr, 3300);
 				//3s设置一次随机显示说说
 				setInterval(randomTalks, 3000);
 			},
@@ -279,12 +298,12 @@ $(function(){
 		localStorage.removeItem('lotteryUserList');
 		// localStorage.removeItem('lotteryUserSingle');
 		alert('清除本地缓存成功~');
-		location.href = 'board.html';
+		window.location.href = '/board?eid='+eid;
 	}
 
 	//初始化中奖list 数量
 	var giftnum = {{result.setgift || 0}} || 5;
-	if (!localStorage.getItem("lotteryUserList")) {
+	if (!localStorage.getItem("lottery_" + eid)) {
 		var _tpl = '';
 		for (var i = 0; i < giftnum; i++) {
 			_tpl += '<li class="item sign-lottery"><span class="avatar"><img src="/public/board/style/images/luck-ho.png"></span><span class="nickname"></span></li>';
@@ -305,9 +324,9 @@ $(function(){
 	});
 
 	//已经参与过抽奖任务
-	if (localStorage.getItem("lotteryUserList")) {
+	if (localStorage.getItem("lottery_" + eid)) {
 		$("#layout-lottery").show();
-		var userListArr = JSON.parse(localStorage.getItem("lotteryUserList"));
+		var userListArr = JSON.parse(localStorage.getItem("lottery_" + eid));
 
 		var tplUserList = '';
 		for (var i = 0; i < userListArr.length; i++) {
@@ -413,10 +432,10 @@ $(function(){
 				});
 			}
 			
-			localStorage.setItem("lotteryUserList", JSON.stringify(listArr));
+			localStorage.setItem("lottery_" + eid, JSON.stringify(listArr));
 		}
 
-	}
+	};
 
 	function lotteryFucSingle(maxNum){
 		if ($("#lottery-beg").text() == '开始抽奖') {
@@ -461,7 +480,54 @@ $(function(){
 
 		}
 
+	};
+
+	function getRandomColor(){
+		return '#'+('00000'+(Math.random()*0xffffff <<0).toString(16)).substr(-6); 
+	};
+
+	function loaddanmutext(data){
+		var userinfo = data.data,
+			danmutxt = data.danmutxt,
+			_now = new Date().getTime(),
+			random = Math.random() * 95 >> 0,
+			color = getRandomColor();
+
+		var tpl = '<div class="mod-danmuser" id="danmu-'+_now+'" style="top: '+random+'%;">'
+						+'<span class="avatar"><img src="'+userinfo.headimgurl+'" /></span>'
+						+'<span class="txt" style="color: '+color+'">'+danmutxt+'</span>'
+					+'</div>';
+
+		$("body").append(tpl);
+
+		setTimeout(function(){
+			$("body").find($("#danmu-"+_now)).remove();
+		}, 10000); //10s后删除该浮层
+	};
+
+	var ws = new WebSocket("ws://127.0.0.1:8080");
+	//成功连接
+	ws.onopen = function (e) {
+		console.log('连接到ws:8080端口成功~');
+		//身份验证
+		ws.send(JSON.stringify({role: 'board', eid: eid}));
 	}
+	ws.onmessage = function(event) {
+		var _data = JSON.parse(event.data);
+
+		if (_data.type && _data.type === 'danmu') {
+			//弹幕业务逻辑
+			loaddanmutext(_data);
+		}else{
+			checkInUser.push(_data);
+			console.log(checkInUser);
+		}
+	};
+	ws.onclose = function (e) {
+		console.log('ws:8080 关闭。');
+		window.location.reload();
+	}
+
 });
 {% if result.openLottery && result.lotteryType != 'group' %}
 (function() {

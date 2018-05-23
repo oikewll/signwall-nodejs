@@ -929,6 +929,7 @@ img {
 .notice-short .txt{
 	font-size: 36px;
 	margin-bottom: 20px;
+	text-shadow: 0 2px 6px rgba(0,0,0,.6);
 }
 .notice-short .desc{
 	font-size: 18px;
@@ -1270,6 +1271,57 @@ html,
 .item-popup-lol{
  	-webkit-animation: popupOnce .8s .3s ease both;
 	animation: popupOnce .8s .3s ease both;
+}
+
+.mod-danmuser{
+	height: 43px;
+	line-height: 43px;
+	background: rgba(255, 255, 255, .95);
+	box-shadow: 0 0 15px rgba(0,0,0,.6);
+	border-radius: 50px;
+	position: fixed;
+	top: 0;
+	left: 100%;
+	z-index: 30;
+	padding: 0 20px 0 40px;
+	white-space: nowrap;
+	-webkit-animation: danmufly 16s linear both;
+}
+.mod-danmuser .avatar{
+	position: absolute;
+	width: 60px;
+	height: 60px;
+	top: -10px;
+	left: -40px;
+	overflow: hidden;
+	border-radius: 50px;
+	box-shadow: -5px 0 15px rgba(0,0,0,.6);
+	border: 3px solid #fff;
+}
+.mod-danmuser .avatar img{
+	border-radius: 50%;
+	width: 100%;
+	height: 100%;
+}
+.mod-danmuser .txt{
+	color: #666;
+	text-shadow: 0 1px 0 rgba(0,0,0,.35);
+	font-size: 14px;
+}
+
+@-webkit-keyframes danmufly{
+	0%{
+		-webkit-transform: translateX(0);
+		opacity: 1;
+	}
+	95%{
+		-webkit-transform: translateX(-3000px);
+		opacity: 1
+	}
+	100%{
+		-webkit-transform: translateX(-3000px);
+		opacity: 0
+	}
 }
 
 @media only screen and (max-width:600px), only screen and (max-device-width:600px){

@@ -19,11 +19,13 @@
     "async": "^2.4.1",
     "cors": "^2.8.3",
     "express": "^4.15.3",
+    "hashmap": "^2.3.0",
     "leanengine": "^2.0.3",
     "moment": "^2.18.1",
     "node-telegram-bot-api": "^0.27.1",
     "qiniu": "^6.1.13",
     "request": "^2.81.0",
-    "swig": "^1.4.2"
+    "swig": "^1.4.2",
+    "ws": "^5.2.0"
   }
 }

@@ -16,7 +16,7 @@
 
 <section class="container" id="container"></section>
 
-<section class="footer">build with Leancloud</section>
+<section class="footer" id="clearsign">build with Leancloud</section>
 
 <textarea id="data-cont" style="display:none;">
 	<span class="avatar" id="avatar"><img src="$headimgurl$" id="user-avatar" alt="$nickname$" /><input type="file" name="file" id="file" class="ava-btn" /></span>
@@ -44,10 +44,15 @@
 <script src="/public/js/common.js"></script>
 <script>
 $(function(){
-	var succsign = '<div class="vertical sign-success" id="tips-success"><i class="icon-check"></i><span class="txt">恭喜你，签到成功~ ：）</span><p class="desc msubtxt"><input type="text" class="mtxt" /><input type="submit" class="msub" value="发送弹幕" /></p><p class="desc"><a href="/"><i class="icon-double-angle-left"></i>返回</a></p></div>',
-		preloadtpl = '<div class="vertical" id="loading"><i class="icon-spinner icon-spin"></i></div>';
+	var preloadtpl = '<div class="vertical" id="loading"><i class="icon-spinner icon-spin"></i></div>';
+
 	var uid = GetQueryString("uid"),
 		eid = GetQueryString("eid") || '5a9d0186f3ffd900440623dd';
+
+	if (localStorage.getItem("checked_"+eid) && localStorage.getItem("userInfo")) {
+		setdanmuLayout();
+		return;
+	};
 
 	$.ajax({
 		url: "//brige.xiaoxiaoge.com/getuser", //服务端处理
@@ -62,11 +67,12 @@ $(function(){
 			$("#container").html(preloadtpl);
 		},
 		success: function (result) {
-			//渲染模板引擎
-			loadTemp(result);
 
 			//本地存储用户userInfo
 			localStorage.setItem('userInfo', JSON.stringify(result));
+
+			//渲染模板引擎
+			loadTemp(result);
 				
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
@@ -83,6 +89,45 @@ $(function(){
 			temp = htmlTemp.format(res);
 
 		$("#container").append(temp);
+	};
+
+	function setdanmuLayout(){
+		var userInfo = JSON.parse(localStorage.getItem('userInfo'));
+		var succsign = '<div class="sign-success" id="tips-success"><i class="icon-check"></i><span class="txt">恭喜你，签到成功~ ：）</span>'
+						+'<div class="msubtxt">'
+							+'<span class="avatar"><img src="'+userInfo.headimgurl+'"></span>'
+							+'<input type="text" class="mtxt" id="danmutxt" placeholder="「说点什么，出现在大屏幕」" />'
+							+'<input type="submit" class="msub" id="subdanmu" value="发送弹幕" />'
+						+'</div>'
+						// +'<p class="desc"><a href="/"><i class="icon-double-angle-left"></i>返回</a></p>'
+					+'</div>';
+		$("#container").append(succsign);
+
+		//点击发送弹幕
+		$("body").delegate("#subdanmu", "click", function(){
+			var userInfo = JSON.parse(localStorage.getItem('userInfo')),
+				danmutxt = $("#danmutxt").val();
+
+			if (danmutxt === '') {
+				alert('不能发送空弹幕哦~');
+				$("#danmutxt").focus();
+				return;
+			}
+
+			//往ws服务端发送个人弹幕数据数据
+			var ws = new WebSocket("ws://127.0.0.1:8080");
+			//成功连接
+			ws.onopen = function (e) {
+				console.log('连接到ws:8080端口成功~准备发送弹幕');
+				ws.send(JSON.stringify({type: 'danmu', danmutxt: danmutxt, role: 'client', eid: eid, data: userInfo}));
+			}
+		});
+
+		//删除缓存可以重新签到
+		$('#clearsign').on("click", function(){
+			localStorage.removeItem('userInfo');
+			localStorage.removeItem("checked_"+eid);
+		});
 	};
 
 	//点击签到按钮
@@ -110,6 +155,9 @@ $(function(){
 		
 		userInfo.title = $("#title").val() != '' ? $("#title").val() : 'BOSS';
 		userInfo.talks = $("#talks").val() != '' ? $("#talks").val() : '我来啦~希望能抽个大奖';
+
+		//从新存储userInfo
+		localStorage.setItem('userInfo', JSON.stringify(userInfo));
 		
 		$.ajax({
 			url: '/checkin',
@@ -123,19 +171,28 @@ $(function(){
 				$("#container").append('<div class="vertical ver-loading" id="loading"><i class="icon-spinner icon-spin"></i></div>');
 			},
 			success: function (result) {
-				//种下LS，不能重复签入
-				// localStorage.setItem("checked", true);
 
 				if (result.code === -1) {
+					//种下LS，知道已经签到过
+					localStorage.setItem("checked_"+eid, true);
+
 					alert("您已签到过~ 祝您好运 :)");
 					_btn.removeClass("btn-disable");
 					$("#loading").remove()
 					return;
 				}
 
-				if (result.code === 200) {
-					$("#container").append(succsign);
+				$("#loading").remove()
+				setdanmuLayout();
+				
+				//往ws服务端发送userInfo数据
+				var ws = new WebSocket("ws://127.0.0.1:8080");
+				//成功连接
+				ws.onopen = function (e) {
+					console.log('连接到ws:8080端口成功~');
+					ws.send(JSON.stringify({role: 'client', eid: eid, data: userInfo}));
 				}
+
 			},
 			error: function (jqXHR, textStatus, errorThrown) {
 				alert("发生网络错误，请重试 :（ "+textStatus);

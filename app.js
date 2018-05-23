@@ -13,6 +13,50 @@ const url = require('url');
 const qs = require('querystring');
 const async = require('async');
 
+const HashMap = require('hashmap');
+const userConnectionMap = new HashMap();
+var connectNum = 0; //连接数
+
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({
+	port: 8080
+});
+
+wss.on('connection', function connection(ws) {
+
+	connectNum++;
+
+	ws.on('message', function(message) {
+
+		let _msg = JSON.parse(message),
+			eid = _msg.eid,
+			role = _msg.role;
+
+		switch(role) {
+			case 'board' :
+				userConnectionMap.set(eid, ws);
+			break;
+			default:
+				var targetConnection = userConnectionMap.get(eid);
+				if (targetConnection) {
+
+					//服务器时间返回moment计算
+					_msg.data.time = moment(new Date()).format('HH:mm:ss');
+
+					targetConnection.send(JSON.stringify(_msg));
+				}
+			break;
+		}
+
+	});
+
+	ws.on('close', function(message) {
+		var _msg = JSON.parse(message);
+        userConnectionMap.remove(_msg.eid);
+	});
+
+});
+
 const wx = {
 	name: 'se@xiaoxiaoge.com',
 	appid: 'wxf17f8086b1190319',
@@ -108,6 +152,10 @@ app.get('/signin', function(req, res, next){
 	res.render('signin', {
 		title: '签到上墙'
 	});
+});
+
+app.get('/wsscount', function(req, res, next){
+	res.send('连接数：' + connectNum);
 });
 
 app.get('/setevent', function(req, res, next){
@@ -302,6 +350,7 @@ app.post('/:type', function(req, res){
 							res.json({
 								code: -1
 							});
+							return;
 						}
 					}
 
