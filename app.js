@@ -267,7 +267,9 @@ app.post('/:type', function(req, res){
 			let upItem = AV.Object.createWithoutData('events', param.id);
 
 			for(key in param){
-				upItem.set(key, param[key]);
+				if (key !== 'id') {
+					upItem.set(key, param[key]);
+				}
 			}
 
 			upItem.save().then(function(data){

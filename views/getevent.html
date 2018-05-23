@@ -98,7 +98,7 @@ $(function(){
 							+'<td>'+result[i].etime+'</td>'
 							+'<td>'+ q + p + '</td>'
 							+'<td><p>创建：'+result[i].createdAt+'</p><p>更新：'+result[i].updatedAt+'</p></td>'
-							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a><p><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">复制客户端链接</a></p><p><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">复制大屏幕地址</a></p></td>'
+							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a><p><a class="btn-normal ac-copy" data-id="'+result[i].objectId+'" data-route="client" href="javascript:;">复制客户端链接</a></p><p><a class="btn-normal ac-copy" data-id="'+result[i].objectId+'" data-route="board" href="javascript:;">复制大屏幕地址</a></p></td>'
 						+'</tr>'
 			}
 			$("#eventlist").append(tpl);
@@ -106,6 +106,17 @@ $(function(){
 		error: function (jqXHR, textStatus, errorThrown) {
 			alert("发生网络错误，请重试 :（ "+textStatus);
 		}
+	});
+
+	$("body").delegate(".ac-copy", "click", function(){
+			var id = $(this).attr('data-id'),
+				route = $(this).attr('data-route');
+
+			if (route == 'client') {
+				textCopy("http://check.xiaoxiaoge.com/?eid="+id);
+			}else{
+				textCopy("http://check.xiaoxiaoge.com/board?eid="+id);
+			}
 	});
 
 	//代理点击事件
