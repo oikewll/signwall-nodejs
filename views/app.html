@@ -13,8 +13,11 @@
 </head>
 
 <body>
-
+{% if result.clientBgimg %}
+<section class="vertical appindex" style="background-image: url({{ result.clientBgimg }});">
+{% else %}
 <section class="vertical appindex">
+{% endif %}
 	<ul class="list-item">
 		<li class="item">
 			<a href="javascript:;" id="symbalurl">

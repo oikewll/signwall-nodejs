@@ -59,9 +59,14 @@
 <form action="/setevent" method="POST" id="postEvent">
 {% endif %}
 <ul class="setevent">
+	{% if id %}
+	<li><label>活动 ID：</label>{{id}}</li>
+	{% endif %}
 	<li><label>活动名称：</label><input placeholder="设置活动名称" value="{{result.ename}}" type="text" name="ename"/></li>
 	<li><label>活动地点：</label><input placeholder="设置活动地点" value="{{result.eaddress}}" type="text" name="eaddress" /></li>
 	<li><label>活动时间：</label><input type="datetime-local" name="etime" value="{{result.etime}}" /></li>
+	<li><label>客户端图：</label><input type="text" name="clientBgim" value="{{result.clientBgimg}}" /></li>
+	<li><label>大屏幕图：</label><input type="text" name="boardBgimg" value="{{result.boardBgimg}}" /></li>
 	<li><label>开启抽奖：</label>
 		{% if result.openLottery %}
 		<label class="group"><input checked="" type="radio" name="openLottery" value="1" /> 是</label>

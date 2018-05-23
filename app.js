@@ -56,9 +56,27 @@ var getparam = function(req) {
 app.use('/public', express.static(__dirname + '/public'));
 
 app.get('/', function(req, res, next){
-	res.render('app', {
-		title: '团建神器'
-	});
+	let eid = getparam(req).eid;
+
+	if (!eid) {
+		res.render('app', {
+			title: '团建神器 ：）'
+		});
+		return;
+	}
+	let query = new AV.Query('events');
+		query.get(eid).then(function(result){
+
+			res.render('app', {
+				title: '团建神器:-)',
+				result: result.toJSON()
+			});
+
+		}, function (error) {
+			res.render('app', {
+				title: '团建神器-{{err}}'
+			});
+		});
 });
 
 app.get('/board', function(req, res, next){
@@ -73,8 +91,6 @@ app.get('/board', function(req, res, next){
 
 	let query = new AV.Query('events');
 		query.get(eid).then(function(result){
-
-			// res.send(result);return;
 
 			res.render('board', {
 				title: '签到大屏幕:-)',
@@ -196,6 +212,9 @@ app.post('/:type', function(req, res){
 		case'getevent':
 
 			new AV.Query('events').find().then(function(data){
+				// for (var i = data.length - 1; i >= 0; i--) {
+				// 	data[i]._etime = moment(new Date(data[i].etime).getTime()).format('YYYY-MM-DD HH:mm:ss');
+				// }
 				res.json(data);
 			});
 

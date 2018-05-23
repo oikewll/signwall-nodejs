@@ -82,6 +82,7 @@ img {
 	z-index:100;
 }
 .copyright{
+	clear: both;
 	width: 100%;
 	bottom: 10px;
 	text-align: center;
@@ -1179,8 +1180,9 @@ html,
 }
 
 .page-index{
-	background: #484c58 url(images/bg-index.jpg) repeat-x center center;
+	background: #484c58 url(images/bg-index.jpg) center center;
 	background-size: auto 100%;
+	background-attachment: fixed;
 }
 
 .btn-lottory{

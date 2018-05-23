@@ -25,9 +25,11 @@
 	</script>
 </head>
 
-<!-- <body oncontextmenu="self.event.returnValue=false"> -->
-<body class="page-index">
-
+{% if result.boardBgimg %}
+<body class="page-index" oncontextmenu="self.event.returnValue=false" style="background-image: url({{ result.boardBgimg }});">
+{% else %}
+<body class="page-index" oncontextmenu="self.event.returnValue=false">
+{% endif %}
 	<div class="main">
 		<div class="content">
 			<div class="join-info m">
@@ -121,6 +123,7 @@ $(function(){
 		//重设用户list
 		setTimeout(function(){
 			$("#user-layout").remove();
+			$("#user-list").find(".item-holder").remove();
 			$itemFirst.css({
 				"marginLeft" : 30,
 				"webkitTransition" : "none"
@@ -157,7 +160,9 @@ $(function(){
 					return;
 				}
 
-				$("#user-list .item-holder").remove();//移除掉提示
+				if (result.data.length === 0) return;
+
+				// $("#user-list .item-holder").removeClass('item-holder');//移除掉提示
 
 				//这里防止短时间内频繁签入的时候，漏掉第一个以外的新用户，要重新init现有web端list
 				if (result.count >= Number(countNum + 3)) {
@@ -221,6 +226,14 @@ $(function(){
 				if (result.count === 0) {
 					$("#user-list").html('<li class="item item-holder"><em class="unit">:( 还没有人签到呢</em></li>');
 					$("#checkednum").html(0);
+
+					//设置全局变量，更新已签到人数和第一位的识别ID，用于在后台查询是否有新签入
+					countNum = result.count;
+
+					//设置定时器拉取数据
+					cacheInterval = setInterval(getNewUser, 3300);
+					//3s设置一次随机显示说说
+					setInterval(randomTalks, 3000);
 					return;
 				}
 
@@ -450,7 +463,7 @@ $(function(){
 
 	}
 });
-
+{% if result.openLottery && result.lotteryType != 'group' %}
 (function() {
 	if (typeof(Humble) == 'undefined') window.Humble = {};
 	Humble.Trig = {};
@@ -534,24 +547,8 @@ $(function(){
 	}
 	Humble.Trig.init();
 
-	// chrome.runtime.onConnect.addListener(function(port) {
-	// 	console.assert(port.name == "knockknock");
-	// 	port.onMessage.addListener(function(msg) {
-	// 		if (msg.joke == "Knock knock")
-	// 			port.postMessage({
-	// 				question: "Who's there?"
-	// 			});
-	// 		else if (msg.answer == "Madame")
-	// 			port.postMessage({
-	// 				question: "Madame who?"
-	// 			});
-	// 		else if (msg.answer == "Madame... Bovary")
-	// 			port.postMessage({
-	// 				question: "I don't get it."
-	// 			});
-	// 	});
-	// });
 })();
+{% endif %}
 </script>
 </body>
 </html>

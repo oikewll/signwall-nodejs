@@ -16,11 +16,28 @@
 		color: #fff;
 		text-align: center;
 	}
+	.eventlist tr{
+		border-bottom: 1px dotted #999;
+	}
 	.eventlist th{
 		padding: 10px 0;
 	}
 	.eventlist td{
 		padding: 10px 0;
+	}
+	.eventlist p{
+		line-height: 2.5;
+	}
+	.eventlist .link{
+		text-decoration: underline;
+	}
+	.eventlist .thumb{
+		object-fit: cover;
+		width: 120px;
+		height: 160px;
+	}
+	.eventlist .verticle{
+		height: 80px;
 	}
 	.btn-normal{
 		display: inline-block;
@@ -41,13 +58,14 @@
 <body>
 <table class="eventlist" id="eventlist">
 	<tr>
-		<th>EID</th>
+		<th width="10%">EID</th>
 		<th>活动名称</th>
 		<th>活动地点</th>
+		<th>客户端图</th>
+		<th>大屏幕图</th>
 		<th>活动时间</th>
 		<th>开启抽奖</th>
-		<th>创建时间</th>
-		<th>更新时间</th>
+		<th>操作时间</th>
 		<th>操作</th>
 	</tr>
 </table>
@@ -68,15 +86,19 @@ $(function(){
 			var tpl = '';
 			for (var i = result.length - 1; i >= 0; i--) {
 				let q = result[i].openLottery ? '开启' : '关闭',
+					c = result[i].clientBgimg ? result[i].clientBgimg : '//picsum.photos/750/1334/?random',
+					b = result[i].boardBgimg ? result[i].boardBgimg : '//picsum.photos/1920/1080/?random',
 					p = (result[i].openLottery && result[i].lotteryType == 'group') ? '<br />（抽'+result[i].setgift + '人）' : '';
-				tpl += '<tr><td><a href="/board?eid='+result[i].objectId+'" target="_blank">'+result[i].objectId+'</td>'
+
+				tpl += '<tr><td><a href="/board?eid='+result[i].objectId+'" class="link" target="_blank">'+result[i].objectId+'</a><p>（已签到：'+result[i].count+'人）</p></td>'
 							+'<td>'+result[i].ename+'</td>'
 							+'<td>'+result[i].eaddress+'</td>'
+							+'<td><img src="'+ c +'" class="thumb" /></td>'
+							+'<td><img src="'+ b +'" class="thumb verticle" /></td>'
 							+'<td>'+result[i].etime+'</td>'
 							+'<td>'+ q + p + '</td>'
-							+'<td>'+result[i].createdAt+'</td>'
-							+'<td>'+result[i].updatedAt+'</td>'
-							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a></td>'
+							+'<td><p>创建：'+result[i].createdAt+'</p><p>更新：'+result[i].updatedAt+'</p></td>'
+							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a><p><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">复制客户端链接</a></p><p><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">复制大屏幕地址</a></p></td>'
 						+'</tr>'
 			}
 			$("#eventlist").append(tpl);
