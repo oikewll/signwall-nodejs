@@ -158,7 +158,8 @@ input,textarea{
 	padding: 20px;
 	padding-top: 60px;
 	text-align: center;
-	background: #fff;
+	background: #fff url(../img/bg-ticket.svg) no-repeat;
+	background-size: 100% 100%;
 }
 .vertical [class^="icon-"]{
 	margin-bottom: 15px;
