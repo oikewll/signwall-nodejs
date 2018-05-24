@@ -78,7 +78,7 @@
 
 <script src="/public/board/js/jquery.min.js"></script>
 <script src="/public/board/js/fullscreen.js"></script>
-<!-- <script src="/public/board/js/jquery.lottery.js"></script> -->
+<script src="/public/board/js/common.js"></script>
 <script src="/public/board/js/jquery.qrcode.min_1.js"></script>
 <script>
 
@@ -505,10 +505,10 @@ $(function(){
 		}, 10000); //10s后删除该浮层
 	};
 
-	var ws = new WebSocket("ws://127.0.0.1:8080");
+	var ws = new WebSocket(getwsurl());
 	//成功连接
 	ws.onopen = function (e) {
-		console.log('连接到ws:8080端口成功~');
+		console.log('连接到ws端口成功~');
 		//身份验证
 		ws.send(JSON.stringify({role: 'board', eid: eid}));
 	}
@@ -524,7 +524,7 @@ $(function(){
 		}
 	};
 	ws.onclose = function (e) {
-		console.log('ws:8080 关闭。');
+		console.log('ws 关闭。');
 		window.location.reload();
 	}
 

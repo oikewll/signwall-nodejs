@@ -19,7 +19,7 @@ var connectNum = 0; //连接数
 
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({
-	port: 8080
+	port: 8081
 });
 
 wss.on('connection', function connection(ws) {

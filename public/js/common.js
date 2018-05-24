@@ -13,7 +13,7 @@ function GetQueryString(name){
 	if(r!=null)return  unescape(r[2]); return null;
 };
 
- function textCopy(str, callback) {
+function textCopy(str, callback) {
 	// 动态创建 input 元素
 	var aux = document.createElement("input");
 	// 获得需要复制的内容
@@ -35,4 +35,8 @@ function GetQueryString(name){
 	if (typeof(callback) === 'function' && callback ){
 		callback()
 	}
+};
+
+function getwsurl(){
+	return 'https:' === document.location.protocol ? 'wss://check.xiaoxiaoge.com' : 'ws://127.0.0.1:8081';
 };

@@ -115,10 +115,10 @@ $(function(){
 			}
 
 			//往ws服务端发送个人弹幕数据数据
-			var ws = new WebSocket("ws://127.0.0.1:8080");
+			var ws = new WebSocket(getwsurl());
 			//成功连接
 			ws.onopen = function (e) {
-				console.log('连接到ws:8080端口成功~准备发送弹幕');
+				console.log('连接到ws端口成功~准备发送弹幕');
 				ws.send(JSON.stringify({type: 'danmu', danmutxt: danmutxt, role: 'client', eid: eid, data: userInfo}));
 			}
 		});
@@ -186,10 +186,10 @@ $(function(){
 				setdanmuLayout();
 				
 				//往ws服务端发送userInfo数据
-				var ws = new WebSocket("ws://127.0.0.1:8080");
+				var ws = new WebSocket(getwsurl());
 				//成功连接
 				ws.onopen = function (e) {
-					console.log('连接到ws:8080端口成功~');
+					console.log('连接到ws端口成功~');
 					ws.send(JSON.stringify({role: 'client', eid: eid, data: userInfo}));
 				}
 
