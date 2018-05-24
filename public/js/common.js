@@ -38,5 +38,5 @@ function textCopy(str, callback) {
 };
 
 function getwsurl(){
-	return 'https:' === document.location.protocol ? 'wss://check.xiaoxiaoge.com' : 'ws://127.0.0.1:8081';
+	return 'https:' === document.location.protocol ? 'wss://check.xiaoxiaoge.com/websocket' : 'ws://127.0.0.1:8081';
 };
