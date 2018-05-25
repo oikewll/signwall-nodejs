@@ -169,12 +169,13 @@ input,textarea{
 }
 .vertical .txt{
 	font-size: 16px;
+	line-height: 2;
 }
 .sign-success .txt{
 	font-size: 18px;
 	display: inline-block;
 	vertical-align: 4px;
-	padding-left: 20px;
+	padding-left: 10px;
 }
 .sign-success .desc{
 	font-size: 12px;
@@ -234,25 +235,33 @@ input,textarea{
 	width: 80%;
 }
 .list-item .item{
-	display: inline-block;
-	width: 50%;
 	color: #fff;
+	text-shadow: 0 1px 0 #909090;
+	height: 45px;
+	line-height: 45px;
+	background: #dabb84;
+	border-radius: 50px;
+	margin-bottom: 40px;
+	box-shadow: 0 0 15px rgba(0,0,0,.4);
+}
+.list-item .item:last-child{
+	margin-bottom: 0;
 }
 .list-item .item .icon{
 	display: inline-block;
-	background: #dabb84;
 	border-radius: 10px;
-	width: 76px;
-	height: 76px;
-	font-size: 50px;
+	width: 42px;
+	height: 42px;
+	vertical-align: middle;
+	font-size: 28px;
 	text-align: center;
-	line-height: 76px;
-	margin-bottom: 10px;
 	text-indent: 5px;
+	margin-right: 10px;
 }
 .list-item .item .txt{
-	font-size: 14px;
-	display: block;
+	font-size: 16px;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .footer{
@@ -261,7 +270,7 @@ input,textarea{
 	width: 100%;
 	position: fixed;
 	left: 0;
-	bottom: 0;
+	bottom: 5px;
 	color: #999;
 	text-align: center;
 	z-index: 10001;

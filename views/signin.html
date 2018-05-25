@@ -91,9 +91,21 @@ $(function(){
 		$("#container").append(temp);
 	};
 
+	function danmuok(time){
+		var time = time || 2000;
+
+		$("#container").append('<div class="vertical ver-loading" id="danmuok"><i class="icon-ok"></i><span class="txt">发送弹幕成功</span></div>');
+		$("#danmutxt").val('');
+
+		setTimeout(function(){
+			$("#danmuok").remove();
+		}, time);
+
+	};
+
 	function setdanmuLayout(){
 		var userInfo = JSON.parse(localStorage.getItem('userInfo'));
-		var succsign = '<div class="sign-success" id="tips-success"><i class="icon-check"></i><span class="txt">恭喜你，签到成功~ ：）</span>'
+		var succsign = '<div class="sign-success" id="tips-success"><i class="icon-ok"></i><span class="txt">恭喜你，签到成功</span>'
 						+'<div class="msubtxt">'
 							+'<span class="avatar"><img src="'+userInfo.headimgurl+'"></span>'
 							+'<input type="text" class="mtxt" id="danmutxt" placeholder="「说点什么，出现在大屏幕」" />'
@@ -119,7 +131,11 @@ $(function(){
 			//成功连接
 			ws.onopen = function (e) {
 				console.log('连接到ws端口成功~准备发送弹幕');
-				ws.send(JSON.stringify({type: 'danmu', danmutxt: danmutxt, role: 'client', eid: eid, data: userInfo}));
+				ws.send(JSON.stringify({type: 'danmu', danmutxt: danmutxt, role: 'client', eid: eid, data: userInfo}), function(err){
+					alert('发送弹幕失败，请返回重试');
+				});
+
+				danmuok(2000);
 			}
 		});
 

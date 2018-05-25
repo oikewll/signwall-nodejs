@@ -51,8 +51,9 @@ wss.on('connection', function connection(ws) {
 	});
 
 	ws.on('close', function(message) {
-		var _msg = JSON.parse(message);
-        userConnectionMap.remove(_msg.eid);
+		connectNum--;
+		let _msg = JSON.parse(message);
+		userConnectionMap.remove(_msg.eid);
 	});
 
 });
@@ -112,7 +113,7 @@ app.get('/', function(req, res, next){
 		query.get(eid).then(function(result){
 
 			res.render('app', {
-				title: '团建神器:-)',
+				title: '团建神器 :-)',
 				result: result.toJSON()
 			});
 
