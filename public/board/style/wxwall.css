@@ -397,9 +397,18 @@ img {
 	100%{transform:translateY(0);}
 }
 .lottery {
-	width:100%;
-	height:790px;
-	background-color:rgba(255,255,255,0.9);
+	width:1074px;
+	height:680px;
+	position:absolute;
+	border-radius: 10px;
+	top:50%;
+	left:50%;
+	margin-left:-537px;
+	margin-top:-340px;
+	z-index:99;
+
+	background: #fff url(images/bg-lottery.svg) no-repeat center center;
+	background-size: auto 100%;
 
 	-webkit-animation: dropdown .9s ease both;
 	-moz-animation: dropdown .9s ease both;
@@ -682,18 +691,22 @@ img {
 }
 .rock-head {
 	display:block;
-	width:230px;
-	height:230px;
+	width: 220px;
+	height: 220px;
 	/*border:1px solid #ffffff;*/
 	margin:0 auto;
 	text-align:center;
 	/*background-color:rgba(255,255,255,0.37);*/
+	border-radius: 50%;
 	position:relative;
 	cursor:pointer;
+	box-shadow: 0 0 15px rgba(0,0,0,.6);
+	padding: 10px;
 }
 .rock-head img {
-	border-radius:50%;
-	margin-top:10px;
+	border-radius: 50%;
+	width: 100%;
+	height: 100%;
 }
 .rock-head .crown{
 	display: inline-block;
@@ -757,20 +770,11 @@ img {
 	text-align:center;
 	padding:20px 0;
 }
-.del {
-	display:none;
-	width:20px;
-	height:20px;
-	text-align:center;
-	line-height:20px;
-	color:#fff;
-	font-weight:bold;
-	background:#afaeaf;
-	border-radius:10px;
-	font-size:18px;
-	position:absolute;
-	top:15px;
-	right:10px;
+.rock-head,
+.rock-name,
+.btn-rock{
+	position: relative;
+	z-index: 2;
 }
 .btn-clear {
 	padding:78px 35px 0;
@@ -1151,17 +1155,8 @@ img {
 	background-color:rgba(0,0,0,0.5);
 	display:none;
 }
-.lottery {
-	width:1074px;
-	height:680px;
-	position:absolute;
-	top:50%;
-	left:50%;
-	margin-left:-537px;
-	margin-top:-340px;
-	z-index:99;
-}
-.signin-lottery,.wewall-bott {
+.signin-lottery,
+.wewall-bott {
 	position:fixed;
 	width:1074px;
 	left:50%;
@@ -1244,12 +1239,14 @@ html,
 .sineCanvas{
 	display: none;
 	position: absolute;
-	width: 100%;
-	height: 100%;
-	left: 0;
-	top: 0;
- 	-webkit-animation: zoomBig .5s ease both;
-	animation: zoomBig .5s ease both;
+	/*width: 100%;
+	height: 100%;*/
+	/*z-index: 100;*/
+	left: 50%;
+	top: 50%;
+	transform: translate3d(-50%, -50%, 0);
+ 	/*-webkit-animation: zoomBig .5s ease both;
+	animation: zoomBig .5s ease both;*/
 }
 
 @-webkit-keyframes popupOnce{
