@@ -985,6 +985,8 @@ img {
 	border-radius:50%;
 	width: 140px;
 	height: 140px;
+	background: url(../../img/default-avatar.png);
+	background-size: 100% 100%;
 }
 .user-layout span,
 .user-list .item span {

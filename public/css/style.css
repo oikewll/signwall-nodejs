@@ -158,8 +158,8 @@ input,textarea{
 	padding: 20px;
 	padding-top: 60px;
 	text-align: center;
-	background: #fff url(../img/bg-ticket.svg) no-repeat;
-	background-size: 100% 100%;
+	background: #fff url(../img/bg-ticket.svg) no-repeat center center;
+	background-size: auto 100%;
 }
 .vertical [class^="icon-"]{
 	margin-bottom: 15px;
@@ -187,11 +187,14 @@ input,textarea{
 	font-size: 14px;
 }
 .msubtxt .avatar{
-	border-radius: 50;
+	border-radius: 50%;
 	width: 155px;
 	height: 155px;
 	margin: 0 auto 30px auto;
 	display: block;
+	overflow: hidden;
+	background: url(../img/default-avatar.png);
+	background-size: 100% 100%;
 }
 .msubtxt .avatar img{
 	width: 100%;
@@ -203,14 +206,17 @@ input,textarea{
 	width: 100%;
 	border: 4px solid #aaa;
 	height: 45px;
+	font-size: 14px;
 	text-align: center;
 	margin-bottom: 20px;
 	border-radius: 50px;
+	box-shadow: none;
 }
 .msubtxt .msub{
 	display: block;
 	margin: 0 auto;
 	width: 90px;
+	height: 35px;
 	line-height: 35px;
 	background: #000;
 	color: #fff;
@@ -218,6 +224,10 @@ input,textarea{
 	text-align: center;
 	border-radius: 50px;
 	border: 0 none;
+}
+.msubtxt .msub:before,
+.msubtxt .msub:after{
+	display: none;
 }
 .msubtxt .msub:active{
 	background: #333;
@@ -274,4 +284,5 @@ input,textarea{
 	color: #999;
 	text-align: center;
 	z-index: 10001;
+	opacity: .6;
 }

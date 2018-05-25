@@ -190,6 +190,8 @@ app.get('/getevent/edit/:id', function(req, res, next){
 * 轮询方法：
 * @param: eid 场次活动的id
 * @return: 用户列表，用户数
+*
+* 2018-05-25 已废弃多次轮询返回的数据，改用更高效的ws服务器推送到大屏幕
 */
 app.get('/getcheck', function(req, res, next){
 	let eid = getparam(req).eid;
@@ -201,7 +203,7 @@ app.get('/getcheck', function(req, res, next){
 
 			if (userList.length !== 0) {
 				for (var i = userList.length - 1; i >= 0; i--) {
-					userList[i].time = moment(new Date(userList[i]['checkInTime'])).startOf('hour').fromNow();
+					userList[i].time = moment(new Date(userList[i]['checkInTime'])).fromNow();
 				}
 			}
 
