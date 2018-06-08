@@ -76,6 +76,7 @@
 <script src="/public/board/js/fullscreen.js"></script>
 <script src="/public/board/js/common.js"></script>
 <script src="/public/board/js/jquery.qrcode.min_1.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/web-animations/latest/web-animations.min.js"></script> 兼容WEB API的polyfill -->
 {% if result.openLottery && result.lotteryType != 'group' %}
 <script src="/public/board/js/media.js"></script>
 {% endif %}
@@ -493,19 +494,43 @@ $(function(){
 		var userinfo = data.data,
 			danmutxt = data.danmutxt,
 			_now = new Date().getTime(),
-			random = Math.random() * 95 >> 0,
-			color = getRandomColor();
+			random = Math.random() * 70 >> 0,
+			color = getRandomColor(),
 
-		var tpl = '<div class="mod-danmuser" id="danmu-'+_now+'" style="top: '+random+'%;">'
+			wwidth = document.body.clientWidth,
+			animatime = 14 * 1000;  //14s
+
+		var tpl = '<div class="mod-danmuser" id="danmu-'+_now+'" style="top: '+Number(5+random)+'%;">'
 						+'<span class="avatar"><img src="'+userinfo.headimgurl+'" /></span>'
 						+'<span class="txt" style="color: '+color+'">'+danmutxt+'</span>'
 					+'</div>';
 
 		$("body").append(tpl);
 
+		var danmuw = $('#danmu-'+_now).width();
+
+		//如果不支持web api添加css动画做polyfill
+		if (!document.getElementById('danmu-'+_now).animate) {
+			$(".mod-danmuser").addClass('anm-fly');
+		}
+
+		document.getElementById('danmu-'+_now).animate([
+			// keyframes
+			{
+				transform: 'translateX(0px)'
+			}, 
+			{
+				transform: 'translateX(-'+Number(wwidth + danmuw + 200)+'px)'
+			}
+			], { 
+			// timing options
+			duration: animatime,
+			iterations: 1
+		})
+
 		setTimeout(function(){
 			$("body").find($("#danmu-"+_now)).remove();
-		}, 10000); //10s后删除该浮层
+		}, animatime + 5000); //s后删除该浮层
 	};
 
 	var ws = new WebSocket(getwsurl());

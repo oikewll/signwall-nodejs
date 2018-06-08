@@ -1,0 +1,94 @@
+.setevent{
+	color: #fff;
+	width: 450px;
+	margin: 0 auto;
+}
+.setevent li{
+	padding: 10px;
+}
+.setevent input{
+	line-height: 34px;
+	height: 34px;
+	background: #fff;
+	color: #000;
+	border: 1px solid #ddd;
+}
+.setevent input[disabled]{
+	background: #999;
+	border-color: #666;
+	cursor: not-allowed;
+}
+.setevent .group{
+	margin-right: 20px;
+}
+input[type='radio']{
+	height: auto;
+	line-height: normal;
+}
+input[type='text'],
+input[type='number'],
+input[type='datetime-local']{
+	width: 250px;
+}
+.setevent button{
+	background: #fff;
+	color: #000;
+	padding: 5px 20px;
+}
+
+.eventlist{
+	width: 100%;
+	color: #fff;
+	text-align: center;
+}
+.eventlist tr{
+	border-bottom: 1px dotted #999;
+}
+.eventlist th{
+	padding: 10px 0;
+}
+.eventlist td{
+	padding: 10px 0;
+}
+.eventlist p{
+	line-height: 2.5;
+}
+.eventlist .link{
+	text-decoration: underline;
+}
+.eventlist .thumb{
+	object-fit: cover;
+	width: 120px;
+	height: 160px;
+}
+.eventlist .verticle{
+	height: 80px;
+}
+.btn-normal{
+	display: inline-block;
+	padding: 0 10px;
+	border-radius: 4px;
+	background: #fff;
+	color: #000;
+	height: 26px;
+	line-height: 26px;
+}
+.btn-delete{
+	background: red;
+	color: #fff;
+}
+.text-loading{
+	display: block;
+	width: 100%;
+	line-height: 400px;
+	height: 400px;
+	font-size: 28px;
+	font-weight: bold;
+	text-align: center;
+	color: #fff;
+}
+
+.operation{
+	padding: 30px 0;
+	text-align: center;
+}

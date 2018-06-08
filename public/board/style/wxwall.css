@@ -1273,24 +1273,26 @@ html,
 }
 
 .mod-danmuser{
-	height: 43px;
-	line-height: 43px;
+	height: 50px;
+	line-height: 50px;
 	background: rgba(255, 255, 255, .95);
 	box-shadow: 0 0 15px rgba(0,0,0,.6);
 	border-radius: 50px;
 	position: fixed;
 	top: 0;
-	left: 100%;
+	left: 104%;
 	z-index: 30;
-	padding: 0 20px 0 40px;
+	padding: 0 20px 0 50px;
 	white-space: nowrap;
+}
+.anm-fly{
 	-webkit-animation: danmufly 16s linear both;
 }
 .mod-danmuser .avatar{
 	position: absolute;
-	width: 60px;
-	height: 60px;
-	top: -10px;
+	width: 75px;
+	height: 75px;
+	top: -15px;
 	left: -40px;
 	overflow: hidden;
 	border-radius: 50px;
@@ -1305,7 +1307,7 @@ html,
 .mod-danmuser .txt{
 	color: #666;
 	text-shadow: 0 1px 0 rgba(0,0,0,.35);
-	font-size: 14px;
+	font-size: 16px;
 }
 
 @-webkit-keyframes danmufly{

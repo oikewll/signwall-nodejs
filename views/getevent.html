@@ -8,69 +8,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
 <meta name="format-detection" content="telephone=no" />
 <link rel="stylesheet" href="/public/css/style.css" />
+<link rel="stylesheet" href="/public/css/stage.css" />
 <link rel="stylesheet" href="/public/css/font-awesome.min.css" />
 <!--[if IE 7 ]><link rel="stylesheet" href="/public/css/font-awesome-ie7.min.css" /><![endif]-->
-<style>
-	.eventlist{
-		width: 100%;
-		color: #fff;
-		text-align: center;
-	}
-	.eventlist tr{
-		border-bottom: 1px dotted #999;
-	}
-	.eventlist th{
-		padding: 10px 0;
-	}
-	.eventlist td{
-		padding: 10px 0;
-	}
-	.eventlist p{
-		line-height: 2.5;
-	}
-	.eventlist .link{
-		text-decoration: underline;
-	}
-	.eventlist .thumb{
-		object-fit: cover;
-		width: 120px;
-		height: 160px;
-	}
-	.eventlist .verticle{
-		height: 80px;
-	}
-	.btn-normal{
-		display: inline-block;
-		padding: 0 10px;
-		border-radius: 4px;
-		background: #fff;
-		color: #000;
-		height: 26px;
-		line-height: 26px;
-	}
-	.btn-delete{
-		background: red;
-		color: #fff;
-	}
-</style>
 </head>
 
 <body>
-<table class="eventlist" id="eventlist">
-	<tr>
-		<th width="10%">EID</th>
-		<th>活动名称</th>
-		<th>活动地点</th>
-		<th>客户端图</th>
-		<th>大屏幕图</th>
-		<th>活动时间</th>
-		<th>开启抽奖</th>
-		<th>操作时间</th>
-		<th>操作</th>
-	</tr>
-</table>
+<div id="eventlist"><span class="text-loading">加载中...</span></div>
 
-<a href="/setevent" class="btn-normal">+新增一个活动</a>
+<div class="operation">
+	<a href="/setevent" class="btn-normal">+新增一个活动</a>
+</div>
 
 <section class="footer">build with Leancloud</section>
 
@@ -83,7 +31,17 @@ $(function(){
 		type: "POST",
 		timeout: 3000,
 		success: function (result) {
-			var tpl = '';
+			var tpl = '<table class="eventlist"><tr>\
+						<th width="10%">EID</th>\
+						<th>活动名称</th>\
+						<th>活动地点</th>\
+						<th>客户端图</th>\
+						<th>大屏幕图</th>\
+						<th>活动时间</th>\
+						<th>开启抽奖</th>\
+						<th>操作时间</th>\
+						<th>操作</th>\
+					</tr>';
 			for (var i = result.length - 1; i >= 0; i--) {
 				let q = result[i].openLottery ? '开启' : '关闭',
 					c = result[i].clientBgimg ? result[i].clientBgimg : '//picsum.photos/750/1334/?random',
@@ -101,7 +59,9 @@ $(function(){
 							+'<td><a class="btn-normal" href="/getevent/edit/'+result[i].objectId+'">编辑</a> <a class="btn-normal btn-delete ac-delete" href="javascript:;" data-id="'+result[i].objectId+'">删除</a><p><a class="btn-normal ac-copy" data-id="'+result[i].objectId+'" data-route="client" href="javascript:;">复制客户端链接</a></p><p><a class="btn-normal ac-copy" data-id="'+result[i].objectId+'" data-route="board" href="javascript:;">复制大屏幕地址</a></p></td>'
 						+'</tr>'
 			}
-			$("#eventlist").append(tpl);
+			tpl += '</table>';
+
+			$("#eventlist").html(tpl);
 		},
 		error: function (jqXHR, textStatus, errorThrown) {
 			alert("发生网络错误，请重试 :（ "+textStatus);
