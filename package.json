@@ -20,6 +20,7 @@
     "express": "^4.15.3",
     "leanengine": "^2.0.3",
     "moment": "^2.18.1",
+    "hashmap": "^2.3.0",
     "qiniu": "^6.1.13",
     "request": "^2.81.0",
     "swig": "^1.4.2",
