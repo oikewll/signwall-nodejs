@@ -11,21 +11,17 @@ const AV = require('leanengine');
 const bodyParser = require('body-parser');
 const url = require('url');
 const qs = require('querystring');
-const async = require('async');
-
-const HashMap = require('hashmap');
-const userConnectionMap = new HashMap();
-var connectNum = 0; //连接数
-
+const qiniu = require('qiniu');
+const Config = require('./config');
 const WebSocket = require('ws');
 const wss = new WebSocket.Server({
 	port: 8081
 });
 
+var connectNum = 0; //连接数
+
 wss.on('connection', function connection(ws) {
-
 	connectNum++;
-
 	ws.on('message', function(message) {
 
 		let _msg = JSON.parse(message),
@@ -58,28 +54,15 @@ wss.on('connection', function connection(ws) {
 
 });
 
-const wx = {
-	name: 'se@xiaoxiaoge.com',
-	appid: 'wxf17f8086b1190319',
-	appsecret: '0cb3c787f244571c26baa5fedd2d4ed9'
-};
-
 AV.init({
-	appId: process.env.LEANCLOUD_APP_ID || 'CQKaQxpSklRu4D5Bt5W2cMCR-9Nh9j0Va',
-	appKey: process.env.LEANCLOUD_APP_KEY || 'LBIW9LbYTi8ihl9KC394sTXS',
-	masterKey: process.env.LEANCLOUD_APP_MASTER_KEY || 'oWFJsDlN1O4PCOAIALagkW1p'
+	appId: process.env.LEANCLOUD_APP_ID || Config.av.appId,
+	appKey: process.env.LEANCLOUD_APP_KEY || Config.av.appKey,
+	masterKey: process.env.LEANCLOUD_APP_MASTER_KEY || Config.av.masterKey
 });
 
-var qiniu = require('qiniu');
-const qiniuConf = {
-	buket: 'oikewll',
-	buketurl: 'http://on0oi75y0.bkt.clouddn.com',
-	ak: 'WPt7GwwjtdmLxqTx72DHCnK0SwRp-syOCWKExgDV',
-	sk: 'XhP5tEwHd_ubC5hSxTPclQL1EMec7qJXTAMe9aIj'
-}
 //七牛存储API
-qiniu.conf.ACCESS_KEY = qiniuConf.ak;
-qiniu.conf.SECRET_KEY = qiniuConf.sk;
+qiniu.conf.ACCESS_KEY = Config.qiniu.ak;
+qiniu.conf.SECRET_KEY = Config.qiniu.sk;
 
 moment.locale('zh-cn');
 app.use(cors());
@@ -376,7 +359,7 @@ app.post('/:type', function(req, res){
 
 // 七牛参数token
 app.get('/uptoken', function(req, res){
-	var myUptoken = new qiniu.rs.PutPolicy(qiniuConf.buket);
+	var myUptoken = new qiniu.rs.PutPolicy(Config.qiniu.buket);
 	var token = myUptoken.token();
 	// moment.locale('en');
 	// var currentKey = moment(new Date()).format('YYYY-MM-DD-HH:mm:ss');
